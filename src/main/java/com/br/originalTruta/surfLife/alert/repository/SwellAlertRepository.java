@@ -13,4 +13,6 @@ public interface SwellAlertRepository extends JpaRepository<SwellAlert, Long> {
     List<SwellAlert> findByUserIdOrderByCreatedAtDesc(Long userId);
 
     Optional<SwellAlert> findByIdAndUserId(Long id, Long userId);
+
+    List<SwellAlert> findBySpotIdAndEnabledTrue(Long spotId);
 }
