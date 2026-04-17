@@ -51,6 +51,15 @@ app:
       timezone: America/Sao_Paulo
       cell-selection: sea
 
+  tide:
+    provider: worldtides
+    worldtides:
+      base-url: https://www.worldtides.info/api/v3
+      api-key: "COLOQUE_SUA_API_KEY_AQUI"
+      datum: CD
+      days: 1
+      localtime: true
+
 springdoc:
   api-docs:
     enabled: true

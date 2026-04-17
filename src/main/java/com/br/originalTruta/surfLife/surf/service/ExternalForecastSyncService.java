@@ -8,6 +8,7 @@ import com.br.originalTruta.surfLife.surf.integration.openmeteo.record.OpenMeteo
 import com.br.originalTruta.surfLife.surf.integration.openmeteo.record.OpenMeteoWeatherHourlyResponse;
 import com.br.originalTruta.surfLife.surf.record.ExternalForecastBatchImportResponse;
 import com.br.originalTruta.surfLife.surf.record.ExternalForecastImportResponse;
+import com.br.originalTruta.surfLife.surf.record.TideInfo;
 import com.br.originalTruta.surfLife.surf.repository.ForecastSnapshotRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,20 +21,23 @@ import java.util.List;
 @Service
 public class ExternalForecastSyncService {
 
-    private static final String PROVIDER = "OPEN_METEO";
+    private static final String PROVIDER = "OPEN_METEO + WORLDTIDES";
 
     private final SpotService spotService;
     private final ForecastSnapshotRepository forecastSnapshotRepository;
     private final OpenMeteoForecastClient openMeteoForecastClient;
+    private final RealTideService realTideService;
 
     public ExternalForecastSyncService(
             SpotService spotService,
             ForecastSnapshotRepository forecastSnapshotRepository,
-            OpenMeteoForecastClient openMeteoForecastClient
+            OpenMeteoForecastClient openMeteoForecastClient,
+            RealTideService realTideService
     ) {
         this.spotService = spotService;
         this.forecastSnapshotRepository = forecastSnapshotRepository;
         this.openMeteoForecastClient = openMeteoForecastClient;
+        this.realTideService = realTideService;
     }
 
     @Transactional
@@ -115,6 +119,12 @@ public class ExternalForecastSyncService {
 
         return forecastSnapshotRepository.findBySpotIdAndObservedAt(spot.getId(), observedAt)
                 .orElseGet(() -> {
+                    TideInfo tideInfo = realTideService.getTideInfo(
+                            spot.getLatitude(),
+                            spot.getLongitude(),
+                            observedAt
+                    );
+
                     ForecastSnapshot snapshot = new ForecastSnapshot();
                     snapshot.setSpot(spot);
                     snapshot.setWaveHeight(waveHeight);
@@ -122,8 +132,8 @@ public class ExternalForecastSyncService {
                     snapshot.setSwellDirection(degreesToDirection(swellDirectionDegrees));
                     snapshot.setWindSpeed(windSpeed);
                     snapshot.setWindDirection(degreesToDirection(windDirectionDegrees));
-                    snapshot.setTideState("MID");
-                    snapshot.setTideHeight(0.0);
+                    snapshot.setTideState(tideInfo.tideState());
+                    snapshot.setTideHeight(tideInfo.tideHeight());
                     snapshot.setObservedAt(observedAt);
 
                     return forecastSnapshotRepository.save(snapshot);
