@@ -47,18 +47,9 @@ app:
   forecast:
     provider: open-meteo
     open-meteo:
-      base-url: https://marine-api.open-meteo.com
-      timezone: America/Sao_Paulo
-      cell-selection: sea
-
-  tide:
-    provider: worldtides
-    worldtides:
-      base-url: https://www.worldtides.info/api/v3
-      api-key: "COLOQUE_SUA_API_KEY_AQUI"
-      datum: CD
-      days: 1
-      localtime: true
+      base-url: "https://marine-api.open-meteo.com"
+      timezone: "America/Sao_Paulo"
+      cell-selection: "sea"
 
 springdoc:
   api-docs:

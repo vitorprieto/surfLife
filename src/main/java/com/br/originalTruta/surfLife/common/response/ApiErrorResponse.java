@@ -1,10 +1,10 @@
 package com.br.originalTruta.surfLife.common.response;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 
 public record ApiErrorResponse(
-        OffsetDateTime timestamp,
+        Instant timestamp,
         int status,
         String error,
         String message,
@@ -19,7 +19,7 @@ public record ApiErrorResponse(
             List<FieldValidationError> fieldErrors
     ) {
         return new ApiErrorResponse(
-                OffsetDateTime.now(),
+                Instant.now(),
                 status,
                 error,
                 message,

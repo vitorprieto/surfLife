@@ -2,7 +2,7 @@ package com.br.originalTruta.surfLife.user.record;
 
 import com.br.originalTruta.surfLife.user.entity.UserRole;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 public record UserResponse(
         Long id,
@@ -10,7 +10,7 @@ public record UserResponse(
         String email,
         UserRole role,
         boolean active,
-        OffsetDateTime createdAt,
-        OffsetDateTime updatedAt
+        Instant createdAt,
+        Instant updatedAt
 ) {
 }

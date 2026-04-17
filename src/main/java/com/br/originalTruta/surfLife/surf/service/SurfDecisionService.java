@@ -1,6 +1,5 @@
 package com.br.originalTruta.surfLife.surf.service;
 
-import com.br.originalTruta.surfLife.common.exception.BusinessException;
 import com.br.originalTruta.surfLife.surf.entity.ForecastSnapshot;
 import com.br.originalTruta.surfLife.surf.entity.SurfDecisionLabel;
 import com.br.originalTruta.surfLife.surf.entity.SurfProfile;

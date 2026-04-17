@@ -1,6 +1,6 @@
 package com.br.originalTruta.surfLife.surf.record;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 public record FavoriteSpotResponse(
         Long favoriteId,
@@ -11,6 +11,6 @@ public record FavoriteSpotResponse(
         String country,
         Double latitude,
         Double longitude,
-        OffsetDateTime createdAt
+        Instant createdAt
 ) {
 }

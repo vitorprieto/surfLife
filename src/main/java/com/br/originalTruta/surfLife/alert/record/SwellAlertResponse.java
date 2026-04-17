@@ -1,6 +1,6 @@
 package com.br.originalTruta.surfLife.alert.record;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 public record SwellAlertResponse(
         Long id,
@@ -15,7 +15,7 @@ public record SwellAlertResponse(
         String preferredTides,
         String preferredWindDirections,
         boolean enabled,
-        OffsetDateTime createdAt,
-        OffsetDateTime updatedAt
+        Instant createdAt,
+        Instant updatedAt
 ) {
 }

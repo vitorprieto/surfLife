@@ -1,6 +1,6 @@
 package com.br.originalTruta.surfLife.surf.record;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 public record SpotResponse(
         Long id,
@@ -11,7 +11,7 @@ public record SpotResponse(
         Double latitude,
         Double longitude,
         boolean active,
-        OffsetDateTime createdAt,
-        OffsetDateTime updatedAt
+        Instant createdAt,
+        Instant updatedAt
 ) {
 }

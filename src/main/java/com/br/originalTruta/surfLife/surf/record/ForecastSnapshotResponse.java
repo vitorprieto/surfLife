@@ -1,5 +1,6 @@
 package com.br.originalTruta.surfLife.surf.record;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 
 public record ForecastSnapshotResponse(
@@ -14,7 +15,7 @@ public record ForecastSnapshotResponse(
         String tideState,
         Double tideHeight,
         OffsetDateTime observedAt,
-        OffsetDateTime createdAt,
-        OffsetDateTime updatedAt
+        Instant createdAt,
+        Instant updatedAt
 ) {
 }

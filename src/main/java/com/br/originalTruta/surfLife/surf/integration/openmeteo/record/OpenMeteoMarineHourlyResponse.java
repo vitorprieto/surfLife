@@ -24,7 +24,10 @@ public record OpenMeteoMarineHourlyResponse(
             List<Double> waveDirection,
 
             @JsonProperty("wind_wave_direction")
-            List<Double> windWaveDirection
+            List<Double> windWaveDirection,
+
+            @JsonProperty("sea_level_height_msl")
+            List<Double> seaLevelHeight
     ) {
     }
 }

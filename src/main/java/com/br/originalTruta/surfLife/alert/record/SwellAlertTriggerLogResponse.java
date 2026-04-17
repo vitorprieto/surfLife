@@ -1,5 +1,6 @@
 package com.br.originalTruta.surfLife.alert.record;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 
 public record SwellAlertTriggerLogResponse(
@@ -12,6 +13,6 @@ public record SwellAlertTriggerLogResponse(
         Long forecastSnapshotId,
         OffsetDateTime triggeredAt,
         String reason,
-        OffsetDateTime createdAt
+        Instant createdAt
 ) {
 }

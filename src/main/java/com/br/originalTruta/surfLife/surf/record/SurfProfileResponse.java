@@ -2,7 +2,7 @@ package com.br.originalTruta.surfLife.surf.record;
 
 import com.br.originalTruta.surfLife.surf.entity.SurfLevel;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 public record SurfProfileResponse(
         Long id,
@@ -13,7 +13,7 @@ public record SurfProfileResponse(
         Integer minPeriodSeconds,
         String preferredTides,
         String offshoreDirections,
-        OffsetDateTime createdAt,
-        OffsetDateTime updatedAt
+        Instant createdAt,
+        Instant updatedAt
 ) {
 }
