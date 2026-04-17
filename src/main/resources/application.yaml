@@ -41,7 +41,14 @@ app:
 
   swell-alert:
     scheduler:
-      fixed-delay-ms: 300000 # 5 minutos
+      fixed-delay-ms: 300000
+
+  forecast:
+    provider: open-meteo
+    open-meteo:
+      base-url: https://marine-api.open-meteo.com
+      timezone: America/Sao_Paulo
+      cell-selection: sea
 
 springdoc:
   api-docs:
