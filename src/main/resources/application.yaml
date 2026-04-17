@@ -16,6 +16,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        jdbc:
+          time_zone: UTC
 
   flyway:
     enabled: true
@@ -29,12 +31,17 @@ logging:
     org.springframework.security: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
+    com.br.originalTruta.surfLife: DEBUG
 
 app:
   security:
     jwt:
       secret: "surflife-chave-jwt-super-segura-2026"
       expiration-minutes: 120
+
+  swell-alert:
+    scheduler:
+      fixed-delay-ms: 300000 # 5 minutos
 
 springdoc:
   api-docs:
