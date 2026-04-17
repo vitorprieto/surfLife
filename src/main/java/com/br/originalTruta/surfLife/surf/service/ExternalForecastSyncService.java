@@ -54,7 +54,7 @@ public class ExternalForecastSyncService {
 
         int bestIndex = resolveBestIndex(marine.hourly().time());
 
-        ForecastSnapshot saved = buildAndSaveSnapshot(spot, marine, weather, bestIndex);
+        ForecastSnapshot saved = buildAndSaveSnapshotIfNeeded(spot, marine, weather, bestIndex);
 
         return toSingleResponse(saved);
     }
@@ -81,7 +81,7 @@ public class ExternalForecastSyncService {
         List<ExternalForecastImportResponse> imported = new ArrayList<>();
 
         for (int i = 0; i < requestedLimit; i++) {
-            ForecastSnapshot saved = buildAndSaveSnapshot(spot, marine, weather, i);
+            ForecastSnapshot saved = buildAndSaveSnapshotIfNeeded(spot, marine, weather, i);
             imported.add(toSingleResponse(saved));
         }
 
@@ -99,7 +99,7 @@ public class ExternalForecastSyncService {
         return importMultipleForSpot(spotId, limit).importedCount();
     }
 
-    private ForecastSnapshot buildAndSaveSnapshot(
+    private ForecastSnapshot buildAndSaveSnapshotIfNeeded(
             Spot spot,
             OpenMeteoMarineHourlyResponse marine,
             OpenMeteoWeatherHourlyResponse weather,
@@ -111,19 +111,23 @@ public class ExternalForecastSyncService {
         Double windSpeed = getRequiredValue(weather.hourly().windSpeed10m(), index, "wind_speed_10m");
         Double windDirectionDegrees = getRequiredValue(weather.hourly().windDirection10m(), index, "wind_direction_10m");
         String observedAtRaw = getRequiredTime(marine.hourly().time(), index);
+        OffsetDateTime observedAt = parseObservedAt(observedAtRaw);
 
-        ForecastSnapshot snapshot = new ForecastSnapshot();
-        snapshot.setSpot(spot);
-        snapshot.setWaveHeight(waveHeight);
-        snapshot.setWavePeriodSeconds((int) Math.round(wavePeriodDouble));
-        snapshot.setSwellDirection(degreesToDirection(swellDirectionDegrees));
-        snapshot.setWindSpeed(windSpeed);
-        snapshot.setWindDirection(degreesToDirection(windDirectionDegrees));
-        snapshot.setTideState("MID");
-        snapshot.setTideHeight(0.0);
-        snapshot.setObservedAt(parseObservedAt(observedAtRaw));
+        return forecastSnapshotRepository.findBySpotIdAndObservedAt(spot.getId(), observedAt)
+                .orElseGet(() -> {
+                    ForecastSnapshot snapshot = new ForecastSnapshot();
+                    snapshot.setSpot(spot);
+                    snapshot.setWaveHeight(waveHeight);
+                    snapshot.setWavePeriodSeconds((int) Math.round(wavePeriodDouble));
+                    snapshot.setSwellDirection(degreesToDirection(swellDirectionDegrees));
+                    snapshot.setWindSpeed(windSpeed);
+                    snapshot.setWindDirection(degreesToDirection(windDirectionDegrees));
+                    snapshot.setTideState("MID");
+                    snapshot.setTideHeight(0.0);
+                    snapshot.setObservedAt(observedAt);
 
-        return forecastSnapshotRepository.save(snapshot);
+                    return forecastSnapshotRepository.save(snapshot);
+                });
     }
 
     private ExternalForecastImportResponse toSingleResponse(ForecastSnapshot saved) {

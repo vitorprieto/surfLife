@@ -6,7 +6,15 @@ import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "forecast_snapshots")
+@Table(
+        name = "forecast_snapshots",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_forecast_snapshots_spot_observed_at",
+                        columnNames = {"spot_id", "observed_at"}
+                )
+        }
+)
 public class ForecastSnapshot extends BaseAuditableEntity {
 
     @Id

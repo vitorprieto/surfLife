@@ -16,4 +16,8 @@ public interface ForecastSnapshotRepository extends JpaRepository<ForecastSnapsh
             OffsetDateTime start,
             OffsetDateTime end
     );
+
+    boolean existsBySpotIdAndObservedAt(Long spotId, OffsetDateTime observedAt);
+
+    Optional<ForecastSnapshot> findBySpotIdAndObservedAt(Long spotId, OffsetDateTime observedAt);
 }
