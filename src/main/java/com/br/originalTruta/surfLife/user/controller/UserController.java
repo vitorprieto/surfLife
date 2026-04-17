@@ -23,6 +23,6 @@ public class UserController {
     @PostMapping
     @Operation(summary = "Criar usuário", description = "Cria um novo usuário no sistema")
     public ApiResponse<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
-        return ApiResponse.success("User created successfully.", userService.createUser(request));
+        return ApiResponse.success("User created successfully.", userService.create(request));
     }
 }
