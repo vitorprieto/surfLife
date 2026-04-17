@@ -33,7 +33,7 @@ logging:
 app:
   security:
     jwt:
-      secret: change-this-secret-key-with-at-least-32-characters
+      secret: surflife-chave-jwt-super-segura-2026
       expiration-minutes: 120
 
 springdoc:
