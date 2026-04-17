@@ -21,16 +21,19 @@ public class SwellAlertEvaluationService {
 
     private final SwellAlertRepository swellAlertRepository;
     private final ForecastSnapshotService forecastSnapshotService;
+    private final SwellAlertTriggerLogService swellAlertTriggerLogService;
 
     public SwellAlertEvaluationService(
             SwellAlertRepository swellAlertRepository,
-            ForecastSnapshotService forecastSnapshotService
+            ForecastSnapshotService forecastSnapshotService,
+            SwellAlertTriggerLogService swellAlertTriggerLogService
     ) {
         this.swellAlertRepository = swellAlertRepository;
         this.forecastSnapshotService = forecastSnapshotService;
+        this.swellAlertTriggerLogService = swellAlertTriggerLogService;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public SwellAlertEvaluationSummaryResponse evaluateBySpot(Long spotId) {
         ForecastSnapshot snapshot = forecastSnapshotService.findLatestEntityBySpotId(spotId);
         List<SwellAlert> alerts = swellAlertRepository.findBySpotIdAndEnabledTrue(spotId);
@@ -56,11 +59,15 @@ public class SwellAlertEvaluationService {
     }
 
     private SwellAlertEvaluationResponse evaluateAlert(SwellAlert alert, ForecastSnapshot snapshot) {
-        String reason = evaluateReason(alert, snapshot);
-        boolean triggered = "TRIGGERED".equals(reason);
+        String evaluationResult = evaluateReason(alert, snapshot);
+        boolean triggered = "TRIGGERED".equals(evaluationResult);
 
+        String reason;
         if (triggered) {
             reason = buildSuccessReason(alert, snapshot);
+            swellAlertTriggerLogService.createIfNotExists(alert, snapshot, reason);
+        } else {
+            reason = evaluationResult;
         }
 
         return new SwellAlertEvaluationResponse(
