@@ -1,0 +1,21 @@
+package com.br.originalTruta.surfLife.surf.record;
+
+import com.br.originalTruta.surfLife.surf.entity.SurfDecisionLabel;
+
+import java.time.OffsetDateTime;
+
+public record SurfDecisionResponse(
+        Long spotId,
+        String spotName,
+        int score,
+        SurfDecisionLabel label,
+        String recommendation,
+        String reason,
+        Double waveHeight,
+        Integer wavePeriodSeconds,
+        Double windSpeed,
+        String windDirection,
+        String tideState,
+        OffsetDateTime observedAt
+) {
+}
