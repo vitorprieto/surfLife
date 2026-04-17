@@ -42,6 +42,7 @@ app:
   swell-alert:
     scheduler:
       fixed-delay-ms: 300000
+      initial-delay-ms: 30000
 
   forecast:
     provider: open-meteo

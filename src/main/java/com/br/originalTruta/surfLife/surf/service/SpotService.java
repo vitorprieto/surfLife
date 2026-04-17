@@ -50,6 +50,11 @@ public class SpotService {
     }
 
     @Transactional(readOnly = true)
+    public List<Spot> listActiveEntities() {
+        return spotRepository.findByActiveTrueOrderByNameAsc();
+    }
+
+    @Transactional(readOnly = true)
     public Spot findEntityById(Long id) {
         return spotRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Spot not found."));

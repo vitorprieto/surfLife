@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/swell-alert-scheduler")
-@Tag(name = "Swell Alert Scheduler", description = "Manual trigger for swell alert scheduler")
+@Tag(name = "Swell Alert Scheduler", description = "Manual trigger for forecast sync and swell alert evaluation")
 public class SwellAlertSchedulerController {
 
     private final SwellAlertScheduler swellAlertScheduler;
@@ -20,12 +20,15 @@ public class SwellAlertSchedulerController {
     }
 
     @PostMapping("/run")
-    @Operation(summary = "Run scheduler manually", description = "Triggers swell alert evaluation manually")
+    @Operation(
+            summary = "Run scheduler manually",
+            description = "Triggers forecast import for active spots and evaluates enabled swell alerts"
+    )
     public ApiResponse<Map<String, Object>> runNow() {
-        swellAlertScheduler.evaluateEnabledAlerts();
+        swellAlertScheduler.syncForecastAndEvaluateAlerts();
 
         return ApiResponse.success(
-                "Swell alert scheduler executed successfully.",
+                "Forecast sync and swell alert evaluation executed successfully.",
                 Map.of("executed", true)
         );
     }
